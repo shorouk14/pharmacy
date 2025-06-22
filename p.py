@@ -21,7 +21,7 @@ def check_drug_interaction(drug1, drug2):
 
 @app.route('/')
 def home():
-    return render_template('html.html')
+    return render_template('index.html')
 
 @app.route('/check_interaction', methods=['POST'])
 def check_interaction():
