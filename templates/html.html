@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pharmacy - Drug Interaction Checker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+<body>
+    <div class="overlay">
+        <div class="min-h-screen flex flex-col items-center justify-center p-4">
+            <div class="w-full max-w-3xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <h1 class="text-5xl font-bold text-pink-600 mb-4 pulse">Smart Pharmacy</h1>
+                    <p class="text-xl text-gray-600">Check potential drug interactions instantly</p>
+                </div>
+                
+                <!-- Main Card -->
+                <div class="card p-8 mb-8">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Drug Interaction Checker</h2>
+                        <p class="text-gray-600 mb-6">Enter two medications to check for potential interactions. Our database contains information on thousands of drugs.</p>
+                        
+                        <form id="interactionForm" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="drug1" class="block text-sm font-medium text-gray-700 mb-1">First Drug</label>
+                                    <input type="text" id="drug1" name="drug1" 
+                                           class="input-field w-full px-4 py-3 rounded-lg focus:outline-none" 
+                                           placeholder="e.g. Ibuprofen" required>
+                                </div>
+                                <div>
+                                    <label for="drug2" class="block text-sm font-medium text-gray-700 mb-1">Second Drug</label>
+                                    <input type="text" id="drug2" name="drug2" 
+                                           class="input-field w-full px-4 py-3 rounded-lg focus:outline-none" 
+                                           placeholder="e.g. Aspirin" required>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary w-full py-3 px-6 rounded-lg text-white font-semibold">
+                                Check Interaction
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Loading State -->
+                    <div id="loading" class="hidden text-center py-8">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-pink-500 mb-4"></div>
+                        <p class="text-gray-600">Analyzing potential interactions...</p>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div id="resultCard" class="result-card">
+                        <div class="border-t border-gray-200 pt-6 mt-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Interaction Results</h3>
+                            
+                            <div id="resultContent" class="space-y-4">
+                                <!-- Results will be inserted here by JavaScript -->
+                            </div>
+                            
+                            <div class="mt-6 text-sm text-gray-500">
+                                <p>Note: This tool provides information only and does not replace professional medical advice.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+        <!-- Footer -->
+<div class="footer-container mt-12">
+    <div class="max-w-3xl mx-auto px-8 py-6 bg-gradient-to-r from-pink-50/70 to-pink-100/70 rounded-xl backdrop-blur-sm border border-pink-200/50">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="mb-4 md:mb-0">
+                <p class="text-sm md:text-base font-medium text-pink-600">
+                    <span class="text-2xl">💊</span> Smart Pharmacy &copy; 2025
+                </p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-pink-500 hover:text-pink-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="#" class="text-pink-500 hover:text-pink-700 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <span class="hidden md:inline-block h-6 w-px bg-pink-300/50"></span>
+                <p class="text-xs md:text-sm text-pink-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Always consult your healthcare provider
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        // Mock database of drug interactions
+        const interactionDatabase = {
+            "ibuprofen": {
+                "aspirin": {
+                    severity: "moderate",
+                    description: "Increased risk of gastrointestinal bleeding when NSAIDs like ibuprofen are taken with aspirin."
+                },
+                "warfarin": {
+                    severity: "major",
+                    description: "Ibuprofen may increase the anticoagulant effect of warfarin, increasing bleeding risk."
+                },
+                "lisinopril": {
+                    severity: "moderate",
+                    description: "NSAIDs may decrease the antihypertensive effect of ACE inhibitors like lisinopril."
+                }
+            },
+            "aspirin": {
+                "ibuprofen": {
+                    severity: "moderate",
+                    description: "Increased risk of gastrointestinal bleeding when NSAIDs like ibuprofen are taken with aspirin."
+                },
+                "warfarin": {
+                    severity: "major",
+                    description: "Aspirin may increase the anticoagulant effect of warfarin, increasing bleeding risk."
+                }
+            },
+            "warfarin": {
+                "ibuprofen": {
+                    severity: "major",
+                    description: "Ibuprofen may increase the anticoagulant effect of warfarin, increasing bleeding risk."
+                },
+                "aspirin": {
+                    severity: "major",
+                    description: "Aspirin may increase the anticoagulant effect of warfarin, increasing bleeding risk."
+                }
+            },
+            "simvastatin": {
+                "clarithromycin": {
+                    severity: "major",
+                    description: "Clarithromycin may increase the risk of myopathy/rhabdomyolysis when taken with simvastatin."
+                }
+            }
+        };
+        
+        // Form submission handler
+        document.getElementById('interactionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const drug1 = document.getElementById('drug1').value.toLowerCase();
+            const drug2 = document.getElementById('drug2').value.toLowerCase();
+            
+            // Show loading state
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('resultCard').classList.remove('show');
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                checkInteraction(drug1, drug2);
+                document.getElementById('loading').classList.add('hidden');
+            }, 1500);
+        });
+        
+        function checkInteraction(drug1, drug2) {
+            const resultContent = document.getElementById('resultContent');
+            resultContent.innerHTML = '';
+            
+            // Check if drugs are the same
+            if (drug1 === drug2) {
+                resultContent.innerHTML = `
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <p class="font-medium">You entered the same drug twice. Please enter two different medications.</p>
+                    </div>
+                `;
+                document.getElementById('resultCard').classList.add('show');
+                return;
+            }
+            
+            // Check if drugs exist in our database
+            if (!interactionDatabase[drug1] || !interactionDatabase[drug2]) {
+                resultContent.innerHTML = `
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <p class="font-medium">One or both drugs not found in our database.</p>
+                        <p class="mt-2 text-sm">We couldn't find information about ${capitalizeFirstLetter(drug1)} or ${capitalizeFirstLetter(drug2)}. Please check the spelling or consult a pharmacist.</p>
+                    </div>
+                `;
+                document.getElementById('resultCard').classList.add('show');
+                return;
+            }
+            
+            // Check for interaction
+            let interaction = null;
+            if (interactionDatabase[drug1][drug2]) {
+                interaction = interactionDatabase[drug1][drug2];
+            } else if (interactionDatabase[drug2][drug1]) {
+                interaction = interactionDatabase[drug2][drug1];
+            }
+            
+            // Display results
+            if (interaction) {
+                let severityClass = '';
+                let severityText = '';
+                
+                switch(interaction.severity) {
+                    case 'major':
+                        severityClass = 'danger';
+                        severityText = 'Major Interaction';
+                        break;
+                    case 'moderate':
+                        severityClass = 'warning';
+                        severityText = 'Moderate Interaction';
+                        break;
+                    default:
+                        severityClass = 'warning';
+                        severityText = 'Interaction';
+                }
+                
+                resultContent.innerHTML = `
+                    <div class="p-4 bg-white rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-lg">${capitalizeFirstLetter(drug1)} + ${capitalizeFirstLetter(drug2)}</h4>
+                            <span class="pill ${severityClass}">${severityText}</span>
+                        </div>
+                        <p class="text-gray-700">${interaction.description}</p>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-sm font-medium text-gray-600">Recommendation:</p>
+                            <p class="text-sm mt-1">${getRecommendation(interaction.severity)}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultContent.innerHTML = `
+                    <div class="p-4 bg-white rounded-lg border border-gray-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-lg">${capitalizeFirstLetter(drug1)} + ${capitalizeFirstLetter(drug2)}</h4>
+                            <span class="pill safe">No Known Interaction</span>
+                        </div>
+                        <p class="text-gray-700">No significant interactions were found between ${capitalizeFirstLetter(drug1)} and ${capitalizeFirstLetter(drug2)} in our database.</p>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <p class="text-sm">Always consult your healthcare provider before combining medications.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('resultCard').classList.add('show');
+        }
+        
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        
+        function getRecommendation(severity) {
+            switch(severity) {
+                case 'major':
+                    return 'Avoid combining these medications. Consult your healthcare provider immediately if you're currently taking both.';
+                case 'moderate':
+                    return 'Use caution when combining these medications. Monitor for side effects and consult your healthcare provider.';
+                default:
+                    return 'No special precautions needed, but always follow your healthcare provider's instructions.';
+            }
+        }
+    </script>
+</body>
+</html>
